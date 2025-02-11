@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Exceptions\Api\ApiException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\CategoryRequest;
+use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -13,13 +14,15 @@ class CategoryController extends Controller
     // Получение данных о всех категория
     public function index() {
         $categories = Category::all();
-        return response()->json($categories)->setStatusCode(200);
+        // Это для массива объектов
+        return response()->json( CategoryResource::collection($categories))->setStatusCode(200);
     }
 
     // Получение данных о конкретной категории (для ресурсного маршрута)
 
     public function show(Category $category) {
-        return response()->json($category)->setStatusCode(200);
+        // Это для одного объектов
+        return response()->json( new CategoryResource($category)  )->setStatusCode(200);
     }
 
 /*
